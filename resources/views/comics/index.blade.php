@@ -1,7 +1,11 @@
-@extends('layout.app')
+@extends('layout.main')
 
-<a href="{{ route('comics.create')}}">vai al create</a>
-<a href="{{ route('layout.app')}}">vai alla pagina iniziale</a>
+<div>
+  <h1 class="text-warning text-center py-5">questo é l'index</h1>
+  <div class="text-center d-flex flex-column">
+    <a href="{{ route('comics.create')}}">vai al create</a>
+    <a href="{{ route('app')}}">vai alla pagina iniziale</a>
+</div>
 
 
-<h1>non si vede un cazzo</h1>
+</div>

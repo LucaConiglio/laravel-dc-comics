@@ -17,9 +17,7 @@
 
 <body>
 
-    <h1 class="text-danger py-5 text-center">cico</h1>
     
-    <a href="{{ route('comics.index')}}">vai alla pagina iniziale</a>
 </body>
 
 </html>

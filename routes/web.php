@@ -25,7 +25,7 @@ Route::get('/comics', [ComicController::class, "index"])->name("comics.index");
 Route::get('/comics/create', [ComicController::class, "create"])->name("comics.create");
 
 // Store - Rotta che riceve i dati da un form e li salva nella tabella products
-Route::get('/comics', [ComicController::class, "store"])->name("comics.store");
+Route::post('/comics', [ComicController::class, "store"])->name("comics.store");
 
 // Show - Rotta che legge un singolo elemento della tabella products
 Route::get('/comics/show', [ComicController::class, "show"])->name("comics.show");
