@@ -88,7 +88,25 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comic = Comic::find($id);
+
+        if (!$comic) {
+            // Lancio un messaggio d'errore personalizzato
+            abort(406, "Ritenta, sarai più fortunato");
+        }
+
+
+        /*
+    // esempio di dependency injection
+    public function edit(Product $product) {
+        return view("products.edit", [
+            "product" => $product
+        ]);
+    } */
+
+        return view("comics.edit", [
+            "comic" => $comic
+        ]);
     }
 
     /**
@@ -100,7 +118,44 @@ class ComicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+
+
+        // $checkboxes = ["available", "pippo", "pluto"];
+
+        // Le checkbox, se sono flaggate, vengono inviate al server on valore "on"
+        // Se NON sono flaggate, NON vengono inviate, quindi nei dati non vedremo la chiave
+        // di quella checkbox.
+        // Se nei dati non c'è la chiave available, allora la assegno a false
+        if (!key_exists("available", $data)) {
+            $data["available"] =  false;
+        } else {
+            $data["available"] = true;
+        }
+
+        // recupero i dati dell'elemento che corrisponde all'id indicato
+        // $product = Product::findOrFail($id);
+        // $product->name = $data["name"];
+        // $product->description = $data["description"];
+        // $product->price = (float) $data["price"];
+        // $product->available = $data["available"];
+        // $product->save();
+
+        $comic = Product::findOrFail($id);
+        $comic->name = $data["name"];
+        $comic->description = $data["description"];
+        $comic->price = (float) $data["price"];
+        $comic->available = $data["available"];
+        $comic->save();
+        // Assegna i valori come il fill e poi esegue il save();
+        $comic->update($data);
+
+        // devo reindirizzare l'utente ad una pagina in GET
+        return redirect()->route("comics.show", $comic->id);
+
+        //si potrebbe anche fare un metoto più veloce
+        //public function update(Request $request, Comic $comic) 
     }
 
     /**
@@ -111,6 +166,12 @@ class ComicController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comic = Comic::findOrFail($id);
+
+        // sull'istanza del model, il metodo da usare è delete()
+        $comic->delete();
+
+        // Un volta eliminato l'elemento dalla tabella, dobbiamo reindirizzare l'utente da qualche parte.
+        return redirect()->route("comics.index");
     }
 }
