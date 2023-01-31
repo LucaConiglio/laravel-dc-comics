@@ -22,10 +22,10 @@ class ComicController extends Controller
 
     public function index()
     {
-       // $comics = Comic::all();
+        $comics = Comic::all();
 
-        // return view("comics.index", compact("comics"));
-        return view("comics.index");
+        return view("comics.index", compact("comics"));
+        
     }
     
 
@@ -48,18 +48,22 @@ class ComicController extends Controller
     public function store(Request $request)
     {
         // recuperiamo tutti i dati inviati dal form sotto forma di array associativo
-        //$data = $request->all();
+        $data = $request->all();
 
         // dump($data);
 
         // Con i dati ricevuti, creo una nuova riga nel database
-        //$product = new Product();
-        //$product->name = $data["name"];
-        //$product->description = $data["description"];
-        //$product->price = (float) $data["price"];
-        //$product->available = $data["available"] === "si" ? 1 : 0;
-        //$product->img = "valore a caso";
-        //$product->save();
+        $comic = new Comic();
+        $comic->title = $data["title"];
+        $comic->description = $data["description"];
+        $comic->thumb = $data["thumb"];
+        $comic->price =  $data["price"];
+        $comic->series = $data["series"];
+        $comic->type = "type";
+        $comic->save();
+
+
+        
 
         // Per evitare che l'utente rimanga sulla pagina in POST,
         // e ricaricando la pagina possa reinviare gli stessi dati,
@@ -75,9 +79,11 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        return view("comics.show");
+    public function show($id) {
+        $comic = Comic::findOrFail($id);
+
+        
+        return view("comics.show", ["comic" => $comic]);
     }
 
     /**
@@ -86,14 +92,14 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Comic $comic)
     {
-        $comic = Comic::find($id);
+        //$comic = Comic::find($id);
 
-        if (!$comic) {
-            // Lancio un messaggio d'errore personalizzato
-            abort(406, "Ritenta, sarai più fortunato");
-        }
+        // if (!$comic) {
+        //     // Lancio un messaggio d'errore personalizzato
+        //     abort(406, "Ritenta, sarai più fortunato");
+        // }
 
 
         /*
@@ -104,9 +110,7 @@ class ComicController extends Controller
         ]);
     } */
 
-        return view("comics.edit", [
-            "comic" => $comic
-        ]);
+        return view("comics.edit", ["comic" => $comic]);
     }
 
     /**
@@ -116,7 +120,7 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
         $data = $request->all();
 
@@ -128,26 +132,15 @@ class ComicController extends Controller
         // Se NON sono flaggate, NON vengono inviate, quindi nei dati non vedremo la chiave
         // di quella checkbox.
         // Se nei dati non c'è la chiave available, allora la assegno a false
-        if (!key_exists("available", $data)) {
-            $data["available"] =  false;
-        } else {
-            $data["available"] = true;
-        }
+        // if (!key_exists("available", $data)) {
+        //     $data["available"] =  false;
+        // } else {
+        //     $data["available"] = true;
+        // }
 
-        // recupero i dati dell'elemento che corrisponde all'id indicato
-        // $product = Product::findOrFail($id);
-        // $product->name = $data["name"];
-        // $product->description = $data["description"];
-        // $product->price = (float) $data["price"];
-        // $product->available = $data["available"];
-        // $product->save();
+        
 
-        $comic = Product::findOrFail($id);
-        $comic->name = $data["name"];
-        $comic->description = $data["description"];
-        $comic->price = (float) $data["price"];
-        $comic->available = $data["available"];
-        $comic->save();
+        
         // Assegna i valori come il fill e poi esegue il save();
         $comic->update($data);
 
