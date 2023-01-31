@@ -21,7 +21,13 @@
       <p class="card-text"><strong>Tipo:</strong>{{ $comic->type }}</p>
       <a class="btn btn-info my-3" href="{{ route('comics.index')}}">torna all'index</a>
     </div>
-    
+
+    <div>
+       
+      <a href="{{ route('comics.show', $comic->id-1) }}" class="btn btn-info">indietro</a>
+      <a href="{{route('comics.show', $comic->id+1) }}" class="btn btn-info">avanti</a>
+      
+    </div>
   </div>
 
   

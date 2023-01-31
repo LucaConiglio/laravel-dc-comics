@@ -12,13 +12,25 @@
     @csrf()
     @method('PUT')
 
+    @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul>
+          @foreach($errors->all() as $error)
+            <li>{{$error}}</li>       
+          @endforeach
+        </ul>
+      </div>
+      @endif
+
+
+
     <div class="mb-3">
       <label class="form-label">Titolo</label>
       <input type="text" class="form-control" name="title" value="{{ $comic->title }}">
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Contenuto</label>
+      <label class="form-label">Descrizione</label>
       <textarea name="content" cols="30" rows="5" class="form-control">{{ $comic->description }}</textarea>
     </div>
 

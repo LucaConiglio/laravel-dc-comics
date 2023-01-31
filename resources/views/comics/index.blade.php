@@ -39,8 +39,16 @@
           <td>{{ $comic->title }}</td>
           <td>{{ $comic->public ? 'Si' : 'No' }}</td>
           <td>
-            <a href="{{ route('comics.edit', $comic->id) }}" class="btn btn-primary"><i class="fas fa-pencil"></i>E</a>
-            <a href="{{ route('comics.show', $comic->id) }}" class="btn btn-info"><i class="fas fa-eye"></i>S</a>
+            <div class="d-flex gap-2 ">
+              <a href="{{ route('comics.edit', $comic->id) }}" class="btn btn-primary">E</a>
+              <a href="{{ route('comics.show', $comic->id) }}" class="btn btn-info">S</a>
+              <form action="{{route('comics.destroy', $comic->id)}}" method="POST">
+                @csrf()
+                @method('delete')
+                <button class="btn btn-danger">D</button>
+              </form>
+            </div>
+            
           </td>
         </tr>
       @endforeach

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Comic;
+use App\Http\Requests\StoreComicRequest;
+use App\Http\Requests\UpdateComicRequest;
+use Illuminate\Support\Facades\Validator;
 
 class ComicController extends Controller
 {
@@ -45,10 +48,12 @@ class ComicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreComicRequest $request)
     {
         // recuperiamo tutti i dati inviati dal form sotto forma di array associativo
-        $data = $request->all();
+        $data = $request->validated();
+        
+
 
         // dump($data);
 
@@ -59,7 +64,7 @@ class ComicController extends Controller
         $comic->thumb = $data["thumb"];
         $comic->price =  $data["price"];
         $comic->series = $data["series"];
-        $comic->type = "type";
+        $comic->type = $data["type"];
         $comic->save();
 
 
@@ -120,11 +125,13 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comic $comic)
+    public function update(UpdateComicRequest $request, Comic $comic)
+
+        // recuperiamo tutti i dati inviati dal form sotto forma di array associativo
     {
-        $data = $request->all();
+        $data = $request->validated();
 
-
+        
 
         // $checkboxes = ["available", "pippo", "pluto"];
 
